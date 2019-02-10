@@ -25,20 +25,26 @@ def first_weight_linear(i):
     input_shape = (img_rows * img_cols,)
     n_classes = 10
     weight_paths = ['weights/mnist_linear.h5' , 'weights/mnist_linear_2.h5']
-    
-    model = Sequential([
-        Dense(128, input_shape=input_shape),
-        Activation('relu'),
-        Dense(128, activation='relu'),
-        Dropout(0.5),
-        Dense(64, activation='relu'),
-        Dropout(0.5),
-        Dense(64, activation='relu'),
-        Dropout(0.5),
-        Dense(32, activation='relu'),
-        Dropout(0.5),
-        Dense(n_classes, activation='softmax')
-    ])
+    if i == 0:
+        model = Sequential([
+            Dense(128, input_shape=input_shape),
+            Activation('relu'),
+            Dense(128, activation='relu'),
+            Dropout(0.5),
+            Dense(64, activation='relu'),
+            Dropout(0.5),
+            Dense(64, activation='relu'),
+            Dropout(0.5),
+            Dense(32, activation='relu'),
+            Dropout(0.5),
+            Dense(n_classes, activation='softmax')
+        ])
+    elif i == 1:
+        model = Sequential([
+            #Dense(128, input_shape=input_shape, activation='relu', kernel_regularizer=keras.regularizers.l2(0.2)),
+            #Dropout(0.5),
+            Dense(n_classes, input_shape=input_shape, activation='softmax', kernel_regularizer=keras.regularizers.l2(0.2))
+        ])
     
     model.load_weights(weight_paths[i])
     
@@ -66,7 +72,7 @@ def first_weight_linear(i):
 def vis_weights_linear3x3(np_array, img_rows=28, img_cols=28):
     ## Visualize sample result
     radn_n = np.random.randint(np_array.shape[0] - 9)
-    plt.figure(figsize=(10, 10))
+    plt.figure(figsize=(8, 8))
     
     for i in range(9):
         plt.subplot(3, 3, i+1)
@@ -85,7 +91,7 @@ def first_weight_conv():
     
     model = Sequential()
     # Convolution2D(number_filters, row_size, column_size, input_shape=(number_channels, img_row, img_col))
-    model.add(Conv2D(16, kernel_size=(3, 3), input_shape=input_shape, padding='same'))
+    model.add(Conv2D(16, kernel_size=(5, 5), input_shape=input_shape, padding='same'))
     model.add(Activation('relu'))
     model.add(Dropout(0.25))
     model.add(MaxPooling2D(pool_size=(2,2), padding='valid'))
@@ -121,7 +127,7 @@ def first_weight_conv():
     np_array = W1.eval(sess)
     
 
-    np_array = np_array.reshape(3, 3, 16)
+    np_array = np_array.reshape(5, 5, 16)
     np_array = np.transpose(np_array, (2, 0, 1))
     return np_array
 

@@ -29,7 +29,7 @@ def load_model(trained=True):
     
     model = Sequential()
     # Convolution2D(number_filters, row_size, column_size, input_shape=(number_channels, img_row, img_col))
-    model.add(Conv2D(16, kernel_size=(3, 3), input_shape=input_shape, padding='same'))
+    model.add(Conv2D(16, kernel_size=(5, 5), input_shape=input_shape, padding='same'))
     model.add(Activation('relu'))
     model.add(Dropout(0.25))
     model.add(MaxPooling2D(pool_size=(2,2), padding='valid'))
